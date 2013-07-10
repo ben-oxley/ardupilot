@@ -900,6 +900,8 @@ static void one_second_loop()
 
     // send a heartbeat
     gcs_send_message(MSG_HEARTBEAT);
+    
+    mainLoop_event();
 
     // make it possible to change control channel ordering at runtime
     set_control_channels();

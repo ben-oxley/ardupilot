@@ -1,5 +1,50 @@
 // -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
 
+// called AFTER every control loop
+void mainLoop_event(void)
+//Check mode is AUTO!
+{
+    switch(control_mode)
+    {
+    case MANUAL:
+    case STABILIZE:
+    case FLY_BY_WIRE_A:
+    case FLY_BY_WIRE_B:
+    case TRAINING:
+        break;
+
+    case AUTO:
+    case GUIDED:
+    case LOITER:
+        launchControls();
+        break;
+
+    case CIRCLE:
+    case RTL:
+    default:
+        break;
+    }
+}
+    
+void launchControls() {
+  if (hasLaunched = false) {
+
+    if (adjusted_altitude_cm() > (100*100.0) + home.alt){
+
+      servo_write(CH_8,1400);
+      hasLaunched = true;
+
+    }
+
+  } 
+  else { //Then it has been launched
+    if (adjusted_altitude_cm() < (10*100.0)){
+      servo_write(CH_5,1400);
+    }
+  }
+
+}
+
 
 static void failsafe_short_on_event(int16_t fstype)
 {
